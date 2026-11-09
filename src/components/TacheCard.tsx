@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import { COULEURS } from "@/styles/couleurs";
 
@@ -6,19 +6,26 @@ type TacheCardProps = {
   titre: string;
   categorie: string;
   terminee: boolean;
+  onPress: () => void;
+  onSupprimer: () => void;
 };
 
-export default function TacheCard({ titre, categorie, terminee }: TacheCardProps) {
+export default function TacheCard({ titre, categorie, terminee, onPress, onSupprimer }: TacheCardProps) {
   return (
-    <View style={styles.carte}>
+    <Pressable style={styles.carte} onPress={onPress}>
       <View style={styles.ligne}>
         <Text style={styles.titre}>{titre}</Text>
         <Text style={styles.badge}>{categorie}</Text>
       </View>
-      <Text style={{ color: terminee ? "#3BA55C" : COULEURS.muted }}>
-        {terminee ? "✓ Terminée" : "○ À faire"}
-      </Text>
-    </View>
+      <View style={styles.ligne}>
+        <Text style={{ color: terminee ? "#3BA55C" : COULEURS.muted }}>
+          {terminee ? "✓ Terminée" : "○ À faire"}
+        </Text>
+        <Pressable onPress={onSupprimer} hitSlop={8}>
+          <Text style={styles.supprimer}>Supprimer</Text>
+        </Pressable>
+      </View>
+    </Pressable>
   );
 }
 
@@ -46,5 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: COULEURS.accent,
     color: COULEURS.primaire,
     fontSize: 12,
+  },
+  supprimer: {
+    color: "#D64545",
   },
 });
